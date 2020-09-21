@@ -1,0 +1,36 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+## Load packages
+```{r}
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(skimr)
+library(summarytools)
+
+```
+```{r}
+dfa= read_excel("CU_ACAD_DEPT_ENRL.xlsx") %>%
+clean_names()
+```
+```{r}
+skim(dfa)
+```
+
+```{r}
+c = dfa %>% group_by(subject) %>% skim()
+```
+
+```{r}
+dfa %>% dfSummary
+```
+
+```{r}
+dfa %>% dfSummary() %>% view()
+```
+
+```{r message=FALSE }
