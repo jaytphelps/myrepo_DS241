@@ -1,9 +1,11 @@
 ---
-title: "R Notebook"
+title: "Clarkson Class Data"
+author: "Jason Phelps"
+date: "16 Sep 2020"
 output: html_notebook
 ---
 
-
+The intention for this file is to conduct analysis on clarkson's enrollment data.
 ## Load packages
 ```{r}
 library(tidyverse)
@@ -11,26 +13,39 @@ library(janitor)
 library(readxl)
 library(skimr)
 library(summarytools)
+library(tidyr)
 
 ```
+
+
 ```{r}
 dfa= read_excel("CU_ACAD_DEPT_ENRL.xlsx") %>%
 clean_names()
 ```
 ```{r}
-skim(dfa)
 ```
 
+### Tidy data
+
+Let's seperate column term2 into two variables
 ```{r}
-c = dfa %>% group_by(subject) %>% skim()
+dfb = dfa %>% separate(col=term2, into=c('semester', 'year'), sep= " ")
 ```
 
+### Clean and Subset data
+
+get rid of following variables:
+* acad_org
+* current_status
+* instructor
+* course_id
+
+Filtering to only include:
+
+* math courses
+* include catalog numbers for MA131 and MA132
 ```{r}
-dfa %>% dfSummary
+dfc=dfb %>% select(-acad_org, -current_status, -instructor, -course_id) %>% 
+  filter(subject=="MA") %>%
+  filter(catalog  %in% c("131", "132"))
 ```
-
-```{r}
-dfa %>% dfSummary() %>% view()
-```
-
-```{r message=FALSE }
